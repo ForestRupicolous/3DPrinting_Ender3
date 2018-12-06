@@ -10,6 +10,7 @@ Flashed bootloader using Arduino Decimila as ArduinoISP. This needs an 100 Ohm P
 Installed firmeware using this bootloader.
 Currently used Marlin 1.1.9 with configuration taken from https://github.com/wronex/Marlin-Ender-3
 Activated manual mesh leveling with 9 points
+
 ##Leveling:
 Manual mesh bed leving from printer options
 * preheat PLA
@@ -22,9 +23,19 @@ also see https://www.youtube.com/watch?v=mAU7cIZ0Hns
 ## Upgrades
 Links and log for done upgrades
 ### Installed
+https://www.thingiverse.com/thing:2994683
+https://www.thingiverse.com/thing:3015832
+https://www.thingiverse.com/thing:2935204
+https://www.thingiverse.com/thing:2550255
+LCD Knob
+
+
 
 ### Planned
 https://www.youtube.com/watch?v=fq2IKp3jeaY
+https://www.thingiverse.com/thing:3014930
+https://www.thingiverse.com/thing:2759439
+
 
 
 ## Slicer
