@@ -43,3 +43,10 @@ Links and Logs to used Slicer settings
 Important start gcode:  
 _G28; Home axis_  
 _M420 S1; Load leveling mesh_  
+
+## Filaments
+3DEE PLA 
++Good color and good printing experience
+~Cartboard box
+-No vacuum seal or silica gel
+-One clog due to thick part in filament (spliced together?)
