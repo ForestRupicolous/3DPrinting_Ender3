@@ -26,7 +26,9 @@ Links and log for done upgrades
 https://www.thingiverse.com/thing:2994683  
 https://www.thingiverse.com/thing:3015832  
 https://www.thingiverse.com/thing:2935204  
-https://www.thingiverse.com/thing:2550255  
+https://www.thingiverse.com/thing:2550255
+https://www.thingiverse.com/thing:2605108  
+https://www.thingiverse.com/thing:3030151  
 LCD Knob
 
 
@@ -35,7 +37,8 @@ LCD Knob
 https://www.youtube.com/watch?v=fq2IKp3jeaY  
 https://www.thingiverse.com/thing:3014930  
 https://www.thingiverse.com/thing:2759439  
-
+https://www.thingiverse.com/thing:3030151  
+https://www.thingiverse.com/thing:2987100
 
 
 ## Slicer
