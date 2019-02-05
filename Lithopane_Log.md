@@ -1,4 +1,3 @@
-# How to create litophanes from DSLR photos
 * Open photo in GIMP
 * Cut to size (Tool option/squared or other)
 * Reduce to black/white levels:
@@ -15,7 +14,7 @@
 * Upload to http://3dp.rocks/lithophane/
 * Settings
     * Size as needed
-    * Thickness = number of colors/10, e.g.2.4
+    * Thickness = number of colors/10, e.g.2.4 (comment: to get "real" black you need a certain thickness depending on your material, check litho spiral to test)
     * Boarder as needed (=width not thickness)
     * Thinnest layer = 0.1
     * Vectors per Pixel 4?
