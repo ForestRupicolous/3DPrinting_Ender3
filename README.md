@@ -11,6 +11,29 @@ Installed firmeware using this bootloader.
 Currently used Marlin 1.1.9 with configuration taken from https://github.com/wronex/Marlin-Ender-3  
 Activated manual mesh leveling with 9 points
 
+## Extruder calibration
+Disconnected PTFE tube -> 100 mm result in 96 mm output
+M503 shows 93 steps/mm
+Original extruder steps/mm value × 100 mm = total steps taken:
+93 × 100 = 9300
+
+From that, we can extrapolate that calibrated extruder steps/mm value (y) × actual extruded distance = total steps taken:
+y × 96 = 9300
+
+Therefore, calibrated extruder steps/mm value (y) = total steps taken / actual extruded distance:
+y = 9300 / 96
+= 96.875
+Use 
+_M92 E96.875_ to upload it
+_M500_ to save it
+Test it again
+See its to much, measure and calculate again
+_Set to 95 steps/mm_
+
+Test again at end of tube
+change it in Marlin FW!
+
+
 ##Leveling:
 Manual mesh bed leving from printer options
 * preheat PLA
@@ -23,13 +46,18 @@ also see https://www.youtube.com/watch?v=mAU7cIZ0Hns
 ## Upgrades
 Links and log for done upgrades
 ### Installed
+Ender 3 pressure fitting fix 
 https://www.thingiverse.com/thing:2994683  
+2020 Snap On Filament Guide - Ender 3 / CR-10 
 https://www.thingiverse.com/thing:3015832  
+Creality Ender 3 board fan guard 
 https://www.thingiverse.com/thing:2935204  
+Retro feed knob for Anycubic Kossel - Extruder Rotation Visualizer [ERV] 
 https://www.thingiverse.com/thing:2550255
+The Most Ultimate Creality CR-10/S4/S5/Ender 2/Ender 3/Ender 4 Extruder Upgrade 
 https://www.thingiverse.com/thing:2605108  
+Ender 3 LCD Cover 
 https://www.thingiverse.com/thing:3030151  
-LCD Knob
 
 
 
