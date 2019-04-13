@@ -58,6 +58,9 @@ The Most Ultimate Creality CR-10/S4/S5/Ender 2/Ender 3/Ender 4 Extruder Upgrade
 https://www.thingiverse.com/thing:2605108  
 Ender 3 LCD Cover 
 https://www.thingiverse.com/thing:3030151  
+Ender 3 PSU support 
+https://www.thingiverse.com/thing:3023240  
+
 
 
 
