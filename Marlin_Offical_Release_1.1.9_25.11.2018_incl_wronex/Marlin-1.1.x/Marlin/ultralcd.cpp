@@ -1076,7 +1076,36 @@ void lcd_quick_feedback(const bool clear_buttons) {
     }
 
   #endif
+  constexpr int16_t heater_maxtemp[HOTENDS] = ARRAY_BY_HOTENDS(HEATER_0_MAXTEMP, HEATER_1_MAXTEMP, HEATER_2_MAXTEMP, HEATER_3_MAXTEMP, HEATER_4_MAXTEMP);
 
+  void _lcd_preheat(const int16_t endnum, const int16_t temph, const int16_t tempb, const int16_t fan) {
+    if (temph > 0) thermalManager.setTargetHotend(MIN(heater_maxtemp[endnum], temph), endnum);
+    #if HAS_HEATED_BED
+      if (tempb >= 0) thermalManager.setTargetBed(tempb);
+    #else
+      UNUSED(tempb);
+    #endif
+    #if FAN_COUNT > 0
+      #if FAN_COUNT > 1
+        fanSpeeds[active_extruder < FAN_COUNT ? active_extruder : 0] = fan;
+      #else
+        fanSpeeds[0] = fan;
+      #endif
+    #else
+      UNUSED(fan);
+    #endif
+    lcd_return_to_status();
+  }
+
+  //moved up for directly heating from main menu
+  #if HAS_TEMP_HOTEND
+    void lcd_preheat_m1_e0_only() { _lcd_preheat(0, lcd_preheat_hotend_temp[0], -1, lcd_preheat_fan_speed[0]); }
+    void lcd_preheat_m2_e0_only() { _lcd_preheat(0, lcd_preheat_hotend_temp[1], -1, lcd_preheat_fan_speed[1]); }
+    #if HAS_HEATED_BED
+      void lcd_preheat_m1_e0() { _lcd_preheat(0, lcd_preheat_hotend_temp[0], lcd_preheat_bed_temp[0], lcd_preheat_fan_speed[0]); }
+      void lcd_preheat_m2_e0() { _lcd_preheat(0, lcd_preheat_hotend_temp[1], lcd_preheat_bed_temp[1], lcd_preheat_fan_speed[1]); }
+    #endif
+  #endif
   /**
    *
    * "Main" menu
@@ -1084,6 +1113,8 @@ void lcd_quick_feedback(const bool clear_buttons) {
    */
 
   void lcd_main_menu() {
+    
+
     START_MENU();
     MENU_BACK(MSG_WATCH);
 
@@ -1098,6 +1129,12 @@ void lcd_quick_feedback(const bool clear_buttons) {
       MENU_ITEM(submenu, MSG_DEBUG_MENU, lcd_debug_menu);
     #endif
 
+    //Directly enable Preheating
+    #if HOTENDS == 1
+        #if HAS_HEATED_BED
+          MENU_ITEM(function, MSG_PREHEAT_1, lcd_preheat_m1_e0);
+        #endif
+    #endif
     //
     // Set Case light on/off/brightness
     //
@@ -1114,7 +1151,7 @@ void lcd_quick_feedback(const bool clear_buttons) {
     else
       MENU_ITEM(submenu, MSG_PREPARE, lcd_prepare_menu);
 
-    MENU_ITEM(submenu, MSG_CONTROL, lcd_control_menu);
+    
 
     #if ENABLED(SDSUPPORT)
       if (card.cardOK) {
@@ -1147,6 +1184,8 @@ void lcd_quick_feedback(const bool clear_buttons) {
     #if ENABLED(LED_CONTROL_MENU)
       MENU_ITEM(submenu, MSG_LED_CONTROL, lcd_led_menu);
     #endif
+
+    MENU_ITEM(submenu, MSG_CONTROL, lcd_control_menu);
 
     END_MENU();
   }
@@ -1564,40 +1603,15 @@ void lcd_quick_feedback(const bool clear_buttons) {
 
   #endif // HAS_MOTOR_CURRENT_PWM
 
-  constexpr int16_t heater_maxtemp[HOTENDS] = ARRAY_BY_HOTENDS(HEATER_0_MAXTEMP, HEATER_1_MAXTEMP, HEATER_2_MAXTEMP, HEATER_3_MAXTEMP, HEATER_4_MAXTEMP);
-
+ 
   /**
    *
    * "Prepare" submenu items
    *
    */
-  void _lcd_preheat(const int16_t endnum, const int16_t temph, const int16_t tempb, const int16_t fan) {
-    if (temph > 0) thermalManager.setTargetHotend(MIN(heater_maxtemp[endnum], temph), endnum);
-    #if HAS_HEATED_BED
-      if (tempb >= 0) thermalManager.setTargetBed(tempb);
-    #else
-      UNUSED(tempb);
-    #endif
-    #if FAN_COUNT > 0
-      #if FAN_COUNT > 1
-        fanSpeeds[active_extruder < FAN_COUNT ? active_extruder : 0] = fan;
-      #else
-        fanSpeeds[0] = fan;
-      #endif
-    #else
-      UNUSED(fan);
-    #endif
-    lcd_return_to_status();
-  }
 
-  #if HAS_TEMP_HOTEND
-    void lcd_preheat_m1_e0_only() { _lcd_preheat(0, lcd_preheat_hotend_temp[0], -1, lcd_preheat_fan_speed[0]); }
-    void lcd_preheat_m2_e0_only() { _lcd_preheat(0, lcd_preheat_hotend_temp[1], -1, lcd_preheat_fan_speed[1]); }
-    #if HAS_HEATED_BED
-      void lcd_preheat_m1_e0() { _lcd_preheat(0, lcd_preheat_hotend_temp[0], lcd_preheat_bed_temp[0], lcd_preheat_fan_speed[0]); }
-      void lcd_preheat_m2_e0() { _lcd_preheat(0, lcd_preheat_hotend_temp[1], lcd_preheat_bed_temp[1], lcd_preheat_fan_speed[1]); }
-    #endif
-  #endif
+
+
 
   #if HOTENDS > 1
     void lcd_preheat_m1_e1_only() { _lcd_preheat(1, lcd_preheat_hotend_temp[0], -1, lcd_preheat_fan_speed[0]); }
@@ -2657,6 +2671,41 @@ void lcd_quick_feedback(const bool clear_buttons) {
     //
     MENU_BACK(MSG_MAIN);
 
+    #if HAS_TEMP_HOTEND
+
+      //
+      // Cooldown
+      //
+      bool has_heat = false;
+      HOTEND_LOOP() if (thermalManager.target_temperature[HOTEND_INDEX]) { has_heat = true; break; }
+      #if HAS_HEATED_BED
+        if (thermalManager.target_temperature_bed) has_heat = true;
+      #endif
+      if (has_heat) MENU_ITEM(function, MSG_COOLDOWN, lcd_cooldown);
+
+      //
+      // Preheat for Material 1 and 2
+      //
+      #if TEMP_SENSOR_1 != 0 || TEMP_SENSOR_2 != 0 || TEMP_SENSOR_3 != 0 || TEMP_SENSOR_4 != 0 || HAS_HEATED_BED
+        #if HOTENDS == 1
+        #if HAS_HEATED_BED
+          MENU_ITEM(function, MSG_PREHEAT_1, lcd_preheat_m1_e0);
+          MENU_ITEM(function, MSG_PREHEAT_1_END, lcd_preheat_m1_e0_only);
+        #else
+          MENU_ITEM(function, MSG_PREHEAT_1, lcd_preheat_m1_e0_only);
+        #endif
+      #endif // HOTENDS > 1
+      #if HAS_HEATED_BED
+        MENU_ITEM(function, MSG_PREHEAT_1_BEDONLY, lcd_preheat_m1_bedonly);
+      #endif
+        MENU_ITEM(submenu, MSG_PREHEAT_2, lcd_preheat_m2_menu);
+      #else
+        MENU_ITEM(function, MSG_PREHEAT_1, lcd_preheat_m1_e0_only);
+        MENU_ITEM(function, MSG_PREHEAT_2, lcd_preheat_m2_e0_only);
+      #endif
+
+    #endif // HAS_TEMP_HOTEND
+
     //
     // Move Axis
     //
@@ -2744,30 +2793,7 @@ void lcd_quick_feedback(const bool clear_buttons) {
       }
     #endif // ADVANCED_PAUSE_FEATURE
 
-    #if HAS_TEMP_HOTEND
 
-      //
-      // Cooldown
-      //
-      bool has_heat = false;
-      HOTEND_LOOP() if (thermalManager.target_temperature[HOTEND_INDEX]) { has_heat = true; break; }
-      #if HAS_HEATED_BED
-        if (thermalManager.target_temperature_bed) has_heat = true;
-      #endif
-      if (has_heat) MENU_ITEM(function, MSG_COOLDOWN, lcd_cooldown);
-
-      //
-      // Preheat for Material 1 and 2
-      //
-      #if TEMP_SENSOR_1 != 0 || TEMP_SENSOR_2 != 0 || TEMP_SENSOR_3 != 0 || TEMP_SENSOR_4 != 0 || HAS_HEATED_BED
-        MENU_ITEM(submenu, MSG_PREHEAT_1, lcd_preheat_m1_menu);
-        MENU_ITEM(submenu, MSG_PREHEAT_2, lcd_preheat_m2_menu);
-      #else
-        MENU_ITEM(function, MSG_PREHEAT_1, lcd_preheat_m1_e0_only);
-        MENU_ITEM(function, MSG_PREHEAT_2, lcd_preheat_m2_e0_only);
-      #endif
-
-    #endif // HAS_TEMP_HOTEND
 
     //
     // BLTouch Self-Test and Reset
