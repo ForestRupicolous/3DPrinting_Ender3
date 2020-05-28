@@ -11,6 +11,8 @@ Installed firmeware using this bootloader.
 Currently used Marlin 1.1.9 with configuration taken from https://github.com/wronex/Marlin-Ender-3  
 Activated manual mesh leveling with 9 points
 
+PlatformIO USB access: https://docs.platformio.org/en/latest/faq.html#platformio-udev-rules
+Restart OS afterwards!
 ## Extruder calibration
 Disconnected PTFE tube -> 100 mm result in 96 mm output
 M503 shows 93 steps/mm

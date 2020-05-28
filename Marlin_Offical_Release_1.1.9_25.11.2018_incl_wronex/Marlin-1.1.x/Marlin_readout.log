@@ -1,0 +1,59 @@
+start
+echo:Marlin 1.1.9
+
+echo: Last Updated: 2018-08-01 | Author: (MartinKorinek, Ender-3)
+echo:Compiled: Nov 26 2018
+echo: Free Memory: 11619  PlannerBufferBytes: 1232
+echo:V55 stored settings retrieved (655 bytes; crc 20631)
+echo:  G21    ; (mm)
+echo:  M149 C ; Units in Celsius
+
+echo:Filament settings: Disabled
+echo:  M200 D1.75
+echo:  M200 D0
+echo:Steps per unit:
+echo:  M92 X80.00 Y80.00 Z400.00 E95.00
+echo:Maximum feedrates (units/s):
+echo:  M203 X500.00 Y500.00 Z12.00 E120.00
+echo:Maximum Acceleration (units/s2):
+echo:  M201 X9000 Y9000 Z500 E10000
+echo:Acceleration (units/s2): P<print_accel> R<retract_accel> T<travel_accel>
+echo:  M204 P500.00 R1500.00 T500.00
+echo:Advanced: Q<min_segment_time_us> S<min_feedrate> T<min_travel_feedrate> X<max_x_jerk> Y<max_y_jerk> Z<max_z_jerk> E<max_e_jerk>
+echo:  M205 Q20000 S0.00 T0.00 X10.00 Y10.00 Z0.20 E2.50
+echo:Home offset:
+echo:  M206 X0.00 Y0.00 Z0.00
+echo:Mesh Bed Leveling:
+echo:  M420 S0 Z0.00
+echo:  G29 S3 X1 Y1 Z-0.07500
+echo:  G29 S3 X2 Y1 Z-0.07500
+echo:  G29 S3 X3 Y1 Z-0.00000
+echo:  G29 S3 X1 Y2 Z0.15000
+echo:  G29 S3 X2 Y2 Z0.10000
+echo:  G29 S3 X3 Y2 Z0.12500
+echo:  G29 S3 X1 Y3 Z0.52500
+echo:  G29 S3 X2 Y3 Z0.32500
+echo:  G29 S3 X3 Y3 Z0.17500
+echo:Material heatup parameters:
+echo:  M145 S0 H185 B45 F255
+echo:  M145 S1 H215 B0 F255
+echo:PID settings:
+echo:  M301 P21.73 I1.54 D76.55
+
+G29:
+Num X,Y: 3,3
+Z offset: 0.00000
+Measured points:
+        0        1        2
+ 0 -0.07500 -0.07500 -0.00000
+ 1 +0.15000 +0.10000 +0.12500
+ 2 +0.52500 +0.32500 +0.17500
+
+X:0.00 Y:0.00 Z:0.00 E:0.00 Count X:0 Y:0 Z:0
+ok
+
+M78:
+Stats: Prints: 311, Finished: 307, Failed: 4
+Stats: Total time: 20d 11h 24m 0s, Longest job: 10h 22m 48s
+Stats: Filament used: 1668.10m
+ok
