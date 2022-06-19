@@ -74,6 +74,10 @@ https://www.thingiverse.com/thing:3030151
 https://www.thingiverse.com/thing:2987100
 
 
+## 2022: Upgrade to SKR mini E3 V1.2 with BL Touch
+BIGTREETECH-SKR-mini-E3 repo downloaded
+Build SW with platformio (in VS Code)
+
 ## Slicer
 Links and Logs to used Slicer settings
 Important start gcode:  
